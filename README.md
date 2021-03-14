@@ -1,7 +1,7 @@
 # The Web3 Index Subgraph
 
 This package contains the source code for the Web3 Index Subgraph, a project for
-indexing and querying data from the Ethereum blockchain using
+indexing and querying revenue data across web3 protocols using the 
 [The Graph](https://thegraph.com).
 
 ### Deploy the subgraph to the Graph's hosted service (recommended)
