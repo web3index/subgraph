@@ -1,0 +1,54 @@
+specVersion: 0.0.2
+description: Fee data across a collection of web3 protocols.
+repository: https://github.com/web3report/web3report-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: livepeer
+    network: mainnet
+    source:
+      startBlock: 9274420
+      address: 5b1ce829384eebfa30286f12d1e7a695ca45f5d2
+      abi: TicketBroker
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/livepeer/mapping.ts
+      abis:
+        - name: TicketBroker
+          file: ./src/livepeer/abis/TicketBroker.json
+        - name: UniswapExchange
+          file: ./node_modules/uniswap-v1/abi/uniswap_exchange.json
+        - name: UniswapV2Pair
+          file: ./node_modules/@uniswap/v2-core/build/UniswapV2Pair.json
+      entities:
+        - Day
+        - Protocol
+      eventHandlers:
+        - event: WinningTicketRedeemed(indexed address,indexed address,uint256,uint256,uint256,uint256,bytes)
+          handler: winningTicketRedeemed
+  - kind: ethereum/contract
+    name: thegraph
+    network: mainnet
+    source:
+      address: F55041E37E12cD407ad00CE2910B8269B01263b9
+      abi: Staking
+      startBlock: 11440000
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/thegraph/mapping.ts
+      entities:
+        - Day
+        - Protocol
+      abis:
+        - name: Staking
+          file: ./src/thegraph/abis/Staking.json
+        - name: UniswapV2Pair
+          file: ./node_modules/@uniswap/v2-core/build/UniswapV2Pair.json
+      eventHandlers:
+        - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
+          handler: handleAllocationCollected

@@ -1,0 +1,25 @@
+"""
+Protocol global parameters
+"""
+type Protocol @entity {
+  "Protocol id"
+  id: ID!
+  "Total protocol revenue"
+  revenueUSD: BigDecimal!
+  "Protocol day stats"
+  days: [Day!] @derivedFrom(field: "protocol")
+}
+
+"""
+Protocol data accumulated and condensed into day stats
+"""
+type Day @entity {
+  "Timestamp rounded to current day by dividing by 86400"
+  id: ID!
+  "The date beginning at 12:00am UTC"
+  date: Int!
+  "Protocol associated with day"
+  protocol: Protocol!
+  "Fees generated this day in USD"
+  revenueUSD: BigDecimal!
+}
