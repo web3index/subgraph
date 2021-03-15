@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 description: Fee data across a collection of web3 protocols.
-repository: https://github.com/web3report/web3report-subgraph
+repository: https://github.com/web3index/web3index-subgraph
 schema:
   file: ./schema.graphql
 dataSources:
