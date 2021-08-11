@@ -52,3 +52,24 @@ dataSources:
       eventHandlers:
         - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected
+  - kind: ethereum/contract
+    name: ocean
+    network: mainnet
+    source:
+      abi: Pool
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/ocean/mapping.ts
+      entities:
+        - Pool
+        - PoolFactory
+        - Swap
+      abis:
+        - name: Pool
+          file: ./src/ocean/abis/BPool.json
+      eventHandlers:
+        - event: LOG_CALL(indexed bytes4,indexed address,bytes)
+          topic0: '0x34e1990700000000000000000000000000000000000000000000000000000000'
+          handler: handleSetSwapFee

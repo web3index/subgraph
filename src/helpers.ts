@@ -1,4 +1,4 @@
-import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { Day, Protocol } from "./types/schema";
 import { UniswapV2Pair } from "./types/thegraph/UniswapV2Pair";
 
@@ -35,6 +35,15 @@ export function createOrLoadProtocol(id: string): Protocol {
     protocol.save();
   }
   return protocol as Protocol;
+}
+
+export function hexToDecimal(hexString: string, decimals: i32): BigDecimal {
+  let bytes = Bytes.fromHexString(hexString.toString()).reverse() as Bytes
+  let bi = BigInt.fromUnsignedBytes(bytes)
+  let scale = BigInt.fromI32(10)
+    .pow(decimals as u8)
+    .toBigDecimal()
+  return bi.divDecimal(scale)
 }
 
 export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
