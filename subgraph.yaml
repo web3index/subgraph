@@ -63,12 +63,12 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mappings/factory.ts
+      file: ./src/ocean/mapping.ts
       entities:
         - PoolFactory
       abis:
         - name: Factory
-          file: ./abis/BFactory.json
+          file: ./src/ocean/abis/BFactory.json
       eventHandlers:
         - event: BPoolRegistered(address,indexed address)
           handler: handleNewPool
