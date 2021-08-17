@@ -53,6 +53,27 @@ dataSources:
         - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected
   - kind: ethereum/contract
+    name: Factory
+    network: mainnet
+    source:
+      address: '0xbe0083053744ECb871510C88dC0f6b77Da162706'
+      abi: Factory
+      startBlock: 11105585
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/factory.ts
+      entities:
+        - PoolFactory
+      abis:
+        - name: Factory
+          file: ./abis/BFactory.json
+      eventHandlers:
+        - event: BPoolRegistered(address,indexed address)
+          handler: handleNewPool
+templates:
+  - kind: ethereum/contract
     name: ocean
     network: mainnet
     source:
