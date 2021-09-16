@@ -52,3 +52,24 @@ dataSources:
       eventHandlers:
         - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected
+  - kind: ethereum/contract
+    name: phala
+    network: mainnet
+    source:
+      address: 6c5ba91642f10282b576d91922ae6448c9d52f4e
+      abi: PHA
+      startBlock: 9975568
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/phala/mapping.ts
+      entities:
+        - Day
+        - Protocol
+      abis:
+        - name: PHA
+          file: ./src/phala/abis/PHA.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
