@@ -71,5 +71,5 @@ dataSources:
         - name: PHA
           file: ./src/phala/abis/PHA.json
       eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
+        - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
