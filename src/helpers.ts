@@ -16,11 +16,14 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   return bd;
 }
 
-export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
+export function convertTokenToDecimal(
+  tokenAmount: BigInt,
+  exchangeDecimals: BigInt
+): BigDecimal {
   if (exchangeDecimals == ZERO_BI) {
-    return tokenAmount.toBigDecimal()
+    return tokenAmount.toBigDecimal();
   }
-  return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals))
+  return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals));
 }
 
 export function convertToDecimal(eth: BigInt): BigDecimal {
@@ -38,7 +41,7 @@ export function createOrLoadProtocol(id: string): Protocol {
 }
 
 export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
-  let dayID = timestamp / 86400
+  let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
   let day = Day.load(protocolID + "-" + dayID.toString());
 
@@ -52,12 +55,40 @@ export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   return day as Day;
 }
 
-export function getPairPrice(pairAddress: string, reserve0Decimals: BigInt, reserve1Decimals: BigInt): BigDecimal {
-  let pair = UniswapV2Pair.bind(
-    Address.fromString(pairAddress)
-  );
+export function getPairPrice(
+  pairAddress: string,
+  reserve0Decimals: BigInt,
+  reserve1Decimals: BigInt
+): BigDecimal {
+  let pair = UniswapV2Pair.bind(Address.fromString(pairAddress));
   let pairReserves = pair.getReserves();
   return convertTokenToDecimal(pairReserves.value0, reserve0Decimals).div(
     convertTokenToDecimal(pairReserves.value1, reserve1Decimals)
   );
+}
+
+// return 0 if denominator is 0 in division
+export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
+  if (amount1.equals(ZERO_BD)) {
+    return ZERO_BD;
+  } else {
+    return amount0.div(amount1);
+  }
+}
+
+let Q192 = 2 ** 192;
+export function sqrtPriceX96ToTokenPrices(
+  sqrtPriceX96: BigInt,
+  token0Decimals: BigInt,
+  token1Decimals: BigInt
+): BigDecimal[] {
+  let num = sqrtPriceX96.times(sqrtPriceX96).toBigDecimal();
+  let denom = BigDecimal.fromString(Q192.toString());
+  let price1 = num
+    .div(denom)
+    .times(exponentToBigDecimal(token0Decimals))
+    .div(exponentToBigDecimal(token1Decimals));
+
+  let price0 = safeDiv(BigDecimal.fromString("1"), price1);
+  return [price0, price1];
 }

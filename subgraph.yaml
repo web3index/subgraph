@@ -1,15 +1,17 @@
 specVersion: 0.0.2
-description: Fee data across a collection of web3 protocols.
+description:
+  The Web3 Index reports on the demand-side fees paid into web3 network
+  protocols.
 repository: https://github.com/web3index/subgraph
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: livepeer
-    network: mainnet
+    network: arbitrum-one
     source:
-      startBlock: 9274420
-      address: 5b1ce829384eebfa30286f12d1e7a695ca45f5d2
+      startBlock: 5856357
+      address: a8bB618B1520E284046F3dFc448851A1Ff26e41B
       abi: TicketBroker
     mapping:
       kind: ethereum/events
@@ -23,19 +25,23 @@ dataSources:
           file: ./node_modules/uniswap-v1/abi/uniswap_exchange.json
         - name: UniswapV2Pair
           file: ./node_modules/@uniswap/v2-core/build/UniswapV2Pair.json
+        - name: UniswapV3Pool
+          file: ./node_modules/@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json
       entities:
         - Day
         - Protocol
       eventHandlers:
-        - event: WinningTicketRedeemed(indexed address,indexed address,uint256,uint256,uint256,uint256,bytes)
+        - event:
+            WinningTicketRedeemed(indexed address,indexed
+            address,uint256,uint256,uint256,uint256,bytes)
           handler: winningTicketRedeemed
   - kind: ethereum/contract
     name: thegraph
-    network: mainnet
+    network: arbitrum-one
     source:
       address: F55041E37E12cD407ad00CE2910B8269B01263b9
       abi: Staking
-      startBlock: 11440000
+      startBlock: 5856357
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -50,5 +56,7 @@ dataSources:
         - name: UniswapV2Pair
           file: ./node_modules/@uniswap/v2-core/build/UniswapV2Pair.json
       eventHandlers:
-        - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
+        - event:
+            AllocationCollected(indexed address,indexed
+            bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected

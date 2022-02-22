@@ -22,6 +22,7 @@
     "@graphprotocol/graph-ts": "^0.19.0",
     "@protofire/subgraph-toolkit": "0.1.1",
     "@uniswap/v2-core": "^1.0.1",
+    "@uniswap/v3-core": "^1.0.1",
     "assemblyscript": "^0.17.11",
     "bignumber.js": "^9.0.0",
     "fs-extra": "^8.1.0",
