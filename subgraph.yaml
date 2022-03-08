@@ -13,7 +13,7 @@ dataSources:
       abi: TicketBroker
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: ./src/livepeer/mapping.ts
       abis:
@@ -38,7 +38,7 @@ dataSources:
       startBlock: 11440000
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.5
       language: wasm/assemblyscript
       file: ./src/thegraph/mapping.ts
       entities:

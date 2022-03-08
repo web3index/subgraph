@@ -11,7 +11,7 @@
     "prettier-write": "prettier --write '**/*.ts'"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.19.0",
+    "@graphprotocol/graph-cli": "^0.22.0",
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "eslint": "^7.21.0",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@graphprotocol/contracts": "^1.1.0",
-    "@graphprotocol/graph-ts": "^0.19.0",
+    "@graphprotocol/graph-ts": "^0.22.0",
     "@protofire/subgraph-toolkit": "0.1.1",
     "@uniswap/v2-core": "^1.0.1",
     "assemblyscript": "^0.17.11",
