@@ -1,6 +1,7 @@
 import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
 import { Day, Protocol } from "./types/schema";
-import { UniswapV2Pair } from "./types/thegraph/UniswapV2Pair";
+import { UniswapV2Pair } from "./types/livepeer/UniswapV2Pair";
+import { SushiPair } from "./types/thegraph/SushiPair";
 
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);
@@ -16,11 +17,14 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   return bd;
 }
 
-export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: BigInt): BigDecimal {
+export function convertTokenToDecimal(
+  tokenAmount: BigInt,
+  exchangeDecimals: BigInt
+): BigDecimal {
   if (exchangeDecimals == ZERO_BI) {
-    return tokenAmount.toBigDecimal()
+    return tokenAmount.toBigDecimal();
   }
-  return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals))
+  return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals));
 }
 
 export function convertToDecimal(eth: BigInt): BigDecimal {
@@ -38,7 +42,7 @@ export function createOrLoadProtocol(id: string): Protocol {
 }
 
 export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
-  let dayID = timestamp / 86400
+  let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
   let day = Day.load(protocolID + "-" + dayID.toString());
 
@@ -52,12 +56,60 @@ export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   return day as Day;
 }
 
-export function getPairPrice(pairAddress: string, reserve0Decimals: BigInt, reserve1Decimals: BigInt): BigDecimal {
-  let pair = UniswapV2Pair.bind(
-    Address.fromString(pairAddress)
-  );
+export function getPairPrice(
+  pairAddress: string,
+  reserve0Decimals: BigInt,
+  reserve1Decimals: BigInt
+): BigDecimal {
+  let pair = UniswapV2Pair.bind(Address.fromString(pairAddress));
   let pairReserves = pair.getReserves();
   return convertTokenToDecimal(pairReserves.value0, reserve0Decimals).div(
     convertTokenToDecimal(pairReserves.value1, reserve1Decimals)
   );
+}
+
+// return 0 if denominator is 0 in division
+export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
+  if (amount1.equals(ZERO_BD)) {
+    return ZERO_BD;
+  } else {
+    return amount0.div(amount1);
+  }
+}
+
+let Q192 = 2 ** 192;
+export function sqrtPriceX96ToTokenPrices(
+  sqrtPriceX96: BigInt,
+  token0Decimals: BigInt,
+  token1Decimals: BigInt
+): BigDecimal[] {
+  let num = sqrtPriceX96.times(sqrtPriceX96).toBigDecimal();
+  let denom = BigDecimal.fromString(Q192.toString());
+  let price1 = num
+    .div(denom)
+    .times(exponentToBigDecimal(token0Decimals))
+    .div(exponentToBigDecimal(token1Decimals));
+
+  let price0 = safeDiv(BigDecimal.fromString("1"), price1);
+  return [price0, price1];
+}
+
+export function getGRTPriceInUSD(): BigDecimal {
+  let grtPriceOracle = SushiPair.bind(
+    Address.fromString("0x1ceda73c034218255f50ef8a2c282e6b4c301d60")
+  );
+  let reserve1 = grtPriceOracle.getReserves();
+  let grtPriceInETH = reserve1.value1
+    .toBigDecimal()
+    .div(reserve1.value0.toBigDecimal());
+
+  let ethPriceOracle = SushiPair.bind(
+    Address.fromString("0x6ff62bfb8c12109e8000935a6de54dad83a4f39f")
+  );
+  let reserve2 = ethPriceOracle.getReserves();
+  let ethPriceInUSD = reserve2.value1
+    .toBigDecimal()
+    .div(reserve2.value0.toBigDecimal());
+
+  return grtPriceInETH.times(ethPriceInUSD);
 }

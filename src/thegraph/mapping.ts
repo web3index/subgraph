@@ -1,22 +1,29 @@
-import { BigInt, log } from "@graphprotocol/graph-ts";
+import { BigInt } from "@graphprotocol/graph-ts";
 import {
-  convertToDecimal,
-  getPairPrice,
   createOrLoadDay,
   createOrLoadProtocol,
+  getGRTPriceInUSD,
 } from "../helpers";
-import { AllocationCollected } from "../types/thegraph/Staking";
+import { TokensPulled } from "../types/thegraph/Billing";
 
-export function handleAllocationCollected(event: AllocationCollected): void {
+export function handleTokensPulled(event: TokensPulled): void {
   let protocol = createOrLoadProtocol("thegraph");
   let day = createOrLoadDay("thegraph", event.block.timestamp.toI32());
-  let USDC_GRT_PAIR = "0xdfa42ba0130425b21a1568507b084cc246fb0c8f"
-  let pairPrice = getPairPrice(USDC_GRT_PAIR, BigInt.fromI32(6), BigInt.fromI32(18));
-  let fees = convertToDecimal(event.params.tokens);
+  let grtPrice = getGRTPriceInUSD();
 
-  protocol.revenueUSD = protocol.revenueUSD.plus(fees.times(pairPrice));
+  protocol.revenueUSD = protocol.revenueUSD.plus(
+    event.params.amount
+      .toBigDecimal()
+      .times(grtPrice)
+      .div(BigInt.fromI32(10).pow(18).toBigDecimal())
+  );
   protocol.save();
 
-  day.revenueUSD = day.revenueUSD.plus(fees.times(pairPrice));
+  day.revenueUSD = day.revenueUSD.plus(
+    event.params.amount
+      .toBigDecimal()
+      .times(grtPrice)
+      .div(BigInt.fromI32(10).pow(18).toBigDecimal())
+  );
   day.save();
 }
