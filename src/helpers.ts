@@ -96,7 +96,7 @@ export function sqrtPriceX96ToTokenPrices(
 
 export function getGRTPriceInUSD(): BigDecimal {
   let grtPriceOracle = SushiPair.bind(
-    Address.fromString("0x1ceda73c034218255f50ef8a2c282e6b4c301d60")
+    Address.fromString("0x99059b8dd38bced5a47fa2d2211de7c46eb2f1f8")
   );
   let reserve1 = grtPriceOracle.getReserves();
   let grtPriceInETH = reserve1.value1
@@ -104,7 +104,7 @@ export function getGRTPriceInUSD(): BigDecimal {
     .div(reserve1.value0.toBigDecimal());
 
   let ethPriceOracle = SushiPair.bind(
-    Address.fromString("0x6ff62bfb8c12109e8000935a6de54dad83a4f39f")
+    Address.fromString("0x692a0b300366d1042679397e40f3d2cb4b8f7d30")
   );
   let reserve2 = ethPriceOracle.getReserves();
   let ethPriceInUSD = reserve2.value1

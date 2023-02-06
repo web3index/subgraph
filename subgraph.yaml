@@ -15,7 +15,7 @@ dataSources:
       abi: TicketBroker
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.4
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/livepeer/mapping.ts
       abis:
@@ -37,11 +37,11 @@ dataSources:
           handler: winningTicketRedeemed
   - kind: ethereum/contract
     name: thegraph
-    network: matic
+    network: arbitrum-one
     source:
-      address: 10829DB618E6F520Fa3A01c75bC6dDf8722fA9fE
+      address: 1B07D3344188908Fb6DEcEac381f3eE63C48477a
       abi: Billing
-      startBlock: 17803962
+      startBlock: 42472346
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
