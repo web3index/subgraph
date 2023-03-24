@@ -77,7 +77,7 @@ export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
   }
 }
 
-let Q192 = 2 ** 192;
+let Q192 = BigInt.fromString("2").pow(192);
 export function sqrtPriceX96ToTokenPrices(
   sqrtPriceX96: BigInt,
   token0Decimals: BigInt,
@@ -85,6 +85,7 @@ export function sqrtPriceX96ToTokenPrices(
 ): BigDecimal[] {
   let num = sqrtPriceX96.times(sqrtPriceX96).toBigDecimal();
   let denom = BigDecimal.fromString(Q192.toString());
+
   let price1 = num
     .div(denom)
     .times(exponentToBigDecimal(token0Decimals))
