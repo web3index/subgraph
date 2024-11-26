@@ -1,7 +1,7 @@
 import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
-import { Day, Protocol } from "./types/schema";
-import { UniswapV2Pair } from "./types/livepeer/UniswapV2Pair";
-import { SushiPair } from "./types/thegraph/SushiPair";
+import { Day, Protocol } from "../generated/schema"; // updated to match standard generated folder location
+import { UniswapV2Pair } from "../generated/livepeer/UniswapV2Pair"; // updated to use correct path for generated files
+import { SushiPair } from "../generated/thegraph/SushiPair"; // updated to use correct path for generated files
 
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);

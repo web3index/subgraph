@@ -4,7 +4,7 @@ import {
   createOrLoadProtocol,
   getGRTPriceInUSD,
 } from "../helpers";
-import { TokensPulled } from "../types/thegraph/Billing";
+import { TokensPulled } from "../generated/thegraph/Billing";
 
 export function handleTokensPulled(event: TokensPulled): void {
   let protocol = createOrLoadProtocol("thegraph");
