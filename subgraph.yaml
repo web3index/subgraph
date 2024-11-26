@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.4
 description:
   The Web3 Index reports on the demand-side fees paid into web3 network
   protocols.
@@ -20,13 +20,13 @@ dataSources:
       file: ./src/livepeer/mapping.ts
       abis:
         - name: TicketBroker
-          file: ./src/livepeer/abis/TicketBroker.json
+          file: ./src/livepeer/abis/TicketBroker.json  
         - name: UniswapExchange
-          file: ./node_modules/uniswap-v1/abi/uniswap_exchange.json
+          file: ./src/livepeer/abis/UniswapExchange.json
         - name: UniswapV2Pair
-          file: ./node_modules/@uniswap/v2-core/build/UniswapV2Pair.json
+          file: ./src/livepeer/abis/UniswapV2Pair.json
         - name: UniswapV3Pool
-          file: ./node_modules/@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json
+          file: ./src/livepeer/abis/UniswapV3Pool.json
       entities:
         - Day
         - Protocol
