@@ -3,30 +3,33 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "codegen": "graph codegen --debug --output-dir src/types/",
-    "build": "graph build --debug",
+    "codegen": "graph codegen --output-dir src/types/",
+    "build": "graph build",
     "lint": "yarn eslint .",
     "lint-fix": "eslint . --fix",
     "prettier": "prettier '**/*.ts'",
     "prettier-write": "prettier --write '**/*.ts'"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.29.0",
-    "@typescript-eslint/eslint-plugin": "^4.16.1",
-    "@typescript-eslint/parser": "^4.16.1",
-    "eslint": "^7.21.0",
-    "prettier": "^2.2.1"
+    "@graphprotocol/graph-cli": "^0.46.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^2.7.0"
   },
   "dependencies": {
-    "@graphprotocol/graph-ts": "^0.26.0",
     "@graphprotocol/contracts": "^1.1.0",
-    "@protofire/subgraph-toolkit": "0.1.1",
+    "@graphprotocol/graph-ts": "^0.28.0",
+    "@protofire/subgraph-toolkit": "0.1.2",
     "@uniswap/v2-core": "^1.0.1",
     "@uniswap/v3-core": "^1.0.1",
-    "assemblyscript": "^0.17.11",
-    "bignumber.js": "^9.0.0",
-    "fs-extra": "^8.1.0",
-    "js-yaml": "^3.13.1",
-    "uniswap-v1": "Uniswap/uniswap-v1"
-  }
+    "assemblyscript": "^0.20.0",
+    "bignumber.js": "^9.1.0",
+    "fs-extra": "^11.0.0",
+    "js-yaml": "^4.1.0",
+    "uniswap-v1": "github:Uniswap/uniswap-v1"
+  },
+  "description": "This package contains the source code for the Web3 Index Subgraph, a subgraph for indexing and querying fee data across web3 network protocols using [The Graph](https://thegraph.com).",
+  "main": "index.js",
+  "author": "Paul"
 }
