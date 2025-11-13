@@ -1,6 +1,5 @@
-import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import { Address, BigDecimal, BigInt, dataSource } from "@graphprotocol/graph-ts";
 import { Day, Protocol } from "../generated/schema";
-import { UniswapV2Pair } from "../generated/livepeer/UniswapV2Pair";
 import { SushiPair } from "../generated/thegraph/SushiPair";
 
 export let ZERO_BI = BigInt.fromI32(0);
@@ -56,18 +55,6 @@ export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   return day as Day;
 }
 
-export function getPairPrice(
-  pairAddress: string,
-  reserve0Decimals: BigInt,
-  reserve1Decimals: BigInt
-): BigDecimal {
-  let pair = UniswapV2Pair.bind(Address.fromString(pairAddress));
-  let pairReserves = pair.getReserves();
-  return convertTokenToDecimal(pairReserves.value0, reserve0Decimals).div(
-    convertTokenToDecimal(pairReserves.value1, reserve1Decimals)
-  );
-}
-
 // return 0 if denominator is 0 in division
 export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
   if (amount1.equals(ZERO_BD)) {
@@ -96,6 +83,18 @@ export function sqrtPriceX96ToTokenPrices(
 }
 
 export function getGRTPriceInUSD(): BigDecimal {
+  let network = dataSource.network();
+
+  if (network == "mainnet") {
+    let grtUsdPair = SushiPair.bind(
+      Address.fromString("0xdfa42ba0130425b21a1568507b084cc246fb0c8f")
+    );
+    let pairReserves = grtUsdPair.getReserves();
+    let usdc = convertTokenToDecimal(pairReserves.value0, BigInt.fromI32(6));
+    let grt = convertTokenToDecimal(pairReserves.value1, BI_18);
+    return safeDiv(usdc, grt);
+  }
+
   let grtPriceOracle = SushiPair.bind(
     Address.fromString("0x99059b8dd38bced5a47fa2d2211de7c46eb2f1f8")
   );

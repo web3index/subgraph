@@ -23,10 +23,10 @@ dataSources:
           file: ./src/livepeer/abis/TicketBroker.json  
         - name: UniswapExchange
           file: ./src/livepeer/abis/UniswapExchange.json
-        - name: UniswapV2Pair
-          file: ./src/livepeer/abis/UniswapV2Pair.json
         - name: UniswapV3Pool
           file: ./src/livepeer/abis/UniswapV3Pool.json
+        - name: AggregatorV3Interface
+          file: ./src/livepeer/abis/AggregatorV3Interface.json
       entities:
         - Day
         - Protocol

@@ -22,7 +22,8 @@ yarn install
 ## Build + validate
 
 ```bash
-yarn build   # runs graph codegen + graph build
+yarn build          # runs graph codegen + graph build for arbitrum-one
+yarn build:mainnet  # same flow but against subgraph.mainnet.yaml
 ```
 
 Generated bindings live in `src/generated/` and are recreated every build.
@@ -48,7 +49,9 @@ Generated bindings live in `src/generated/` and are recreated every build.
 ```bash
 yarn graph auth <DEPLOY_KEY>
 yarn build
-yarn deploy:studio
+yarn deploy:studio          # deploys arbitrum-one manifest
+yarn build:mainnet
+yarn deploy:studio:mainnet  # deploys the legacy mainnet manifest
 ```
 
 Grab the deployment ID from Studio and drop it into `GRAPH_SUBGRAPH_<NETWORK>_ID` for the web app.
@@ -58,7 +61,9 @@ Grab the deployment ID from Studio and drop it into `GRAPH_SUBGRAPH_<NETWORK>_ID
 | Command              | Description                                   |
 | ------------------- | --------------------------------------------- |
 | `yarn build`        | Runs codegen + graph build                     |
+| `yarn build:mainnet`| Builds the legacy Ethereum mainnet manifest    |
 | `yarn deploy:local` | Deploys to a local graph-node                  |
 | `yarn deploy:studio`| Deploys to Subgraph Studio / The Graph Network |
+| `yarn deploy:studio:mainnet`| Deploys the mainnet manifest to Studio |
 | `yarn lint`         | ESLint                                         |
 | `yarn prettier`     | Formatting check                               |
