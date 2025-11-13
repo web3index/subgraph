@@ -3,15 +3,20 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "codegen": "graph codegen --output-dir src/types/",
+    "codegen": "graph codegen --output-dir src/generated/",
     "build": "graph build",
+    "deploy:local": "graph deploy web-3-index --node http://localhost:8020/ --ipfs http://127.0.0.1:5001",
+    "deploy:studio": "graph deploy web-3-index",
     "lint": "yarn eslint .",
     "lint-fix": "eslint . --fix",
     "prettier": "prettier '**/*.ts'",
     "prettier-write": "prettier --write '**/*.ts'"
   },
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.46.0",
+    "@graphprotocol/graph-cli": "^0.98.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "eslint": "^8.0.0",
@@ -31,5 +36,6 @@
   },
   "description": "This package contains the source code for the Web3 Index Subgraph, a subgraph for indexing and querying fee data across web3 network protocols using [The Graph](https://thegraph.com).",
   "main": "index.js",
-  "author": "Paul"
+  "author": "Paul",
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
