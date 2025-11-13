@@ -1,4 +1,64 @@
 # The Web3 Index Subgraph
 
-This package contains the source code for the Web3 Index Subgraph, a subgraph for
-indexing and querying fee data across web3 network protocols using [The Graph](https://thegraph.com).
+This package contains the source code for the Web3 Index Subgraph, a subgraph for indexing and querying fee data across Web3 network protocols using [The Graph](https://thegraph.com).
+
+
+## Requirements
+
+- Node.js 20.19+ (see `.nvmrc`)
+- Yarn via Corepack (`corepack enable` + `corepack prepare yarn@1.22.22 --activate`)
+- [`@graphprotocol/graph-cli`](https://github.com/graphprotocol/graph-tooling)
+- Arbitrum + Polygon RPC endpoints if you plan to run a local graph-node
+
+## Install
+
+```bash
+nvm use
+corepack enable
+corepack prepare yarn@1.22.22 --activate
+yarn install
+```
+
+## Build + validate
+
+```bash
+yarn build   # runs graph codegen + graph build
+```
+
+Generated bindings live in `src/generated/` and are recreated every build.
+
+## Local graph-node (optional)
+
+1. Clone [`graph-node`](https://github.com/graphprotocol/graph-node) and update `docker-compose.yml` (or `.env`) so the `ethereum` env points to your RPC endpoints, e.g.
+
+   ```text
+   ETHEREUM_RPC=arbitrum-one:https://arb-mainnet.g.alchemy.com/v2/<KEY>,polygon:https://polygon-mainnet.g.alchemy.com/v2/<KEY>
+   ```
+
+2. `docker compose up` inside `graph-node/docker`, wait for port `8020` to come up, then in this repo:
+
+   ```bash
+   graph create --node http://localhost:8020/ web-3-index # run once
+   yarn build
+   yarn deploy:local
+   ```
+
+## Subgraph Studio / The Graph Network
+
+```bash
+graph auth <DEPLOY_KEY>
+yarn build
+yarn deploy:studio
+```
+
+Grab the deployment ID from Studio and drop it into `GRAPH_SUBGRAPH_<NETWORK>_ID` for the web app.
+
+## Handy scripts
+
+| Command              | Description                                   |
+| ------------------- | --------------------------------------------- |
+| `yarn build`        | Runs codegen + graph build                     |
+| `yarn deploy:local` | Deploys to a local graph-node                  |
+| `yarn deploy:studio`| Deploys to Subgraph Studio / The Graph Network |
+| `yarn lint`         | ESLint                                         |
+| `yarn prettier`     | Formatting check                               |
