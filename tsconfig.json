@@ -10,15 +10,14 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./build",
-    "rootDirs": ["src", "generated"],
+    "rootDirs": ["src"],
     "baseUrl": ".",
     "paths": {
       "../../thegraph/abis/*": ["src/thegraph/abis/*"]
     }
   },
   "include": [
-    "src/**/*",
-    "generated/**/*"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
