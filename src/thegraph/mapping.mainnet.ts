@@ -4,7 +4,7 @@ import {
   createOrLoadProtocol,
   getGRTPriceInUSD,
 } from "../helpers";
-import { AllocationCollected } from "../generated/thegraph/Staking";
+import { AllocationCollected } from "../../generated/thegraph/Staking";
 
 /**
  * Accounts for historical The Graph L1 fees by pricing AllocationCollected

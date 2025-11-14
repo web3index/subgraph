@@ -8,6 +8,7 @@
     "build": "graph build",
     "build:mainnet": "graph build subgraph.mainnet.yaml",
     "deploy:local": "graph deploy web-3-index --node http://localhost:8020/ --ipfs http://127.0.0.1:5001",
+    "deploy:local:mainnet": "graph deploy web-3-index-mainnet --node http://localhost:8020/ --ipfs http://127.0.0.1:5001 subgraph.mainnet.yaml",
     "deploy:studio": "graph deploy web-3-index",
     "deploy:studio:mainnet": "graph deploy web-3-index-mainnet subgraph.mainnet.yaml",
     "lint": "yarn eslint .",
