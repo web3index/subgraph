@@ -5,7 +5,7 @@ This package contains the source code for the Web3 Index Subgraph, a subgraph fo
 ## Requirements
 
 - Node.js 20.19+ (see `.nvmrc`)
-- Yarn via Corepack (`corepack enable` + `corepack prepare yarn@1.22.22 --activate`)
+- Yarn 1.22.22 (via Corepack)
 - [`@graphprotocol/graph-cli`](https://github.com/graphprotocol/graph-tooling)
 - Arbitrum + Polygon RPC endpoints if you plan to run a local graph-node
 
@@ -13,6 +13,7 @@ This package contains the source code for the Web3 Index Subgraph, a subgraph fo
 
 ```bash
 nvm use
+npm install -g corepack
 corepack enable
 corepack prepare yarn@1.22.22 --activate
 yarn install
