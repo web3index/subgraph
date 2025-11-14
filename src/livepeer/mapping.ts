@@ -9,6 +9,10 @@ import {
 import { WinningTicketRedeemed } from "../../generated/livepeer/TicketBroker";
 import { AggregatorV3Interface } from "../../generated/livepeer/AggregatorV3Interface";
 
+/**
+ * Converts redeemed ticket face value into USD revenue for the Livepeer protocol
+ * and accrues it to the appropriate protocol + day buckets.
+ */
 export function winningTicketRedeemed(event: WinningTicketRedeemed): void {
   let protocol = createOrLoadProtocol("livepeer");
   let day = createOrLoadDay("livepeer", event.block.timestamp.toI32());
@@ -25,6 +29,10 @@ export function winningTicketRedeemed(event: WinningTicketRedeemed): void {
   day.save();
 }
 
+/**
+ * Reads the Chainlink ETH/USD feed for the current network so a single mapping
+ * works for both the Arbitrum and mainnet manifests.
+ */
 function getEthPriceUSD(): BigDecimal {
   let network = dataSource.network();
   let feedAddress =

@@ -6,6 +6,10 @@ import {
 } from "../helpers";
 import { TokensPulled } from "../../generated/thegraph/Billing";
 
+/**
+ * Captures Arbitrum Billing withdrawals by valuing the pulled tokens in USD
+ * and incrementing the protocol/day revenue totals.
+ */
 export function handleTokensPulled(event: TokensPulled): void {
   let protocol = createOrLoadProtocol("thegraph");
   let day = createOrLoadDay("thegraph", event.block.timestamp.toI32());

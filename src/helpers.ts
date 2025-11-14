@@ -8,6 +8,9 @@ export let ZERO_BD = BigDecimal.fromString("0");
 export let ONE_BD = BigDecimal.fromString("1");
 export let BI_18 = BigInt.fromI32(18);
 
+/**
+ * Returns 10^decimals as a BigDecimal so we can rescale token amounts.
+ */
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   let bd = BigDecimal.fromString("1");
   for (let i = ZERO_BI; i.lt(decimals as BigInt); i = i.plus(ONE_BI)) {
@@ -16,6 +19,9 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   return bd;
 }
 
+/**
+ * Converts a raw token amount into decimals-aware BigDecimal.
+ */
 export function convertTokenToDecimal(
   tokenAmount: BigInt,
   exchangeDecimals: BigInt
@@ -26,10 +32,16 @@ export function convertTokenToDecimal(
   return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals));
 }
 
+/**
+ * Converts a wei-denominated amount into ETH as BigDecimal.
+ */
 export function convertToDecimal(eth: BigInt): BigDecimal {
   return eth.toBigDecimal().div(exponentToBigDecimal(BI_18));
 }
 
+/**
+ * Finds or creates the Protocol entity keyed by the supplied id.
+ */
 export function createOrLoadProtocol(id: string): Protocol {
   let protocol = Protocol.load(id);
   if (protocol == null) {
@@ -40,6 +52,9 @@ export function createOrLoadProtocol(id: string): Protocol {
   return protocol as Protocol;
 }
 
+/**
+ * Returns the day bucket for a protocol at the given timestamp, creating it if needed.
+ */
 export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
@@ -55,7 +70,9 @@ export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   return day as Day;
 }
 
-// return 0 if denominator is 0 in division
+/**
+ * Divides two BigDecimals but guards against division by zero.
+ */
 export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
   if (amount1.equals(ZERO_BD)) {
     return ZERO_BD;
@@ -64,24 +81,9 @@ export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
   }
 }
 
-let Q192 = BigInt.fromString("2").pow(192);
-export function sqrtPriceX96ToTokenPrices(
-  sqrtPriceX96: BigInt,
-  token0Decimals: BigInt,
-  token1Decimals: BigInt
-): BigDecimal[] {
-  let num = sqrtPriceX96.times(sqrtPriceX96).toBigDecimal();
-  let denom = BigDecimal.fromString(Q192.toString());
-
-  let price1 = num
-    .div(denom)
-    .times(exponentToBigDecimal(token0Decimals))
-    .div(exponentToBigDecimal(token1Decimals));
-
-  let price0 = safeDiv(BigDecimal.fromString("1"), price1);
-  return [price0, price1];
-}
-
+/**
+ * Returns GRT priced in USD, using network-specific pools for L1 vs Arbitrum.
+ */
 export function getGRTPriceInUSD(): BigDecimal {
   let network = dataSource.network();
 
