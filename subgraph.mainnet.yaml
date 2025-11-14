@@ -1,7 +1,6 @@
 specVersion: 0.0.4
-description:
-  The Web3 Index reports on the demand-side fees paid into web3 network
-  protocols.
+description: The Web3 Index reports on the demand-side fees paid into web3
+  network protocols.
 repository: https://github.com/web3index/subgraph
 schema:
   file: ./schema.graphql
@@ -10,9 +9,9 @@ dataSources:
     name: livepeer
     network: mainnet
     source:
-      startBlock: 9274420
-      address: 5b1cE829384eEBfa30286F12D1e7a695cA45f5D2
+      address: "0x5b1cE829384eEBfa30286F12D1e7a695cA45f5D2"
       abi: TicketBroker
+      startBlock: 9274420
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -31,15 +30,14 @@ dataSources:
         - Day
         - Protocol
       eventHandlers:
-        - event:
-            WinningTicketRedeemed(indexed address,indexed
+        - event: WinningTicketRedeemed(indexed address,indexed
             address,uint256,uint256,uint256,uint256,bytes)
           handler: winningTicketRedeemed
   - kind: ethereum/contract
-    name: thegraph
+    name: thegraphStaking
     network: mainnet
     source:
-      address: F55041E37E12cD407ad00CE2910B8269B01263b9
+      address: "0xF55041E37E12cD407ad00CE2910B8269B01263b9"
       abi: Staking
       startBlock: 11446786
     mapping:
@@ -56,5 +54,6 @@ dataSources:
         - name: SushiPair
           file: ./src/thegraph/abis/SushiPair.json
       eventHandlers:
-        - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
+        - event: AllocationCollected(indexed address,indexed
+            bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected

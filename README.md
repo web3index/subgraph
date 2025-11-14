@@ -19,14 +19,26 @@ corepack prepare yarn@1.22.22 --activate
 yarn install
 ```
 
+## Manifest workflow
+
+This subgraph supports multiple networks:
+
+- **`subgraph.yaml`** - Arbitrum manifest (indexes Livepeer + The Graph Billing)
+- **`subgraph.mainnet.yaml`** - Ethereum mainnet manifest (indexes Livepeer Staking)
+- **`networks.json`** - Configuration file with contract addresses and start blocks
+
+Use `--network <name>` with build/deploy commands to target a specific network. The CLI automatically rewrites manifests using `networks.json` before compiling.
+
 ## Build + validate
 
 ```bash
-yarn build          # runs graph codegen + graph build for arbitrum-one
-yarn build:mainnet  # same flow but against subgraph.mainnet.yaml
+yarn build              # graph build using current manifest contents
+yarn build:arbitrum     # rewrites via networks.json + builds for arbitrum-one
+yarn build:polygon      # same, but targeting Polygon (Billing only)
+yarn build:mainnet      # builds the mainnet manifest via networks.json
 ```
 
-Generated bindings live in `src/generated/` and are recreated every build.
+Generated bindings live in `generated/` and are recreated every build.
 
 ## Local graph-node (optional)
 
@@ -48,22 +60,19 @@ Generated bindings live in `src/generated/` and are recreated every build.
 
 ```bash
 yarn graph auth <DEPLOY_KEY>
-yarn build
-yarn deploy:studio          # deploys arbitrum-one manifest
-yarn build:mainnet
-yarn deploy:studio:mainnet  # deploys the legacy mainnet manifest
+yarn deploy:studio           # Studio slug: web-3-index-arbitrum
+yarn deploy:studio:polygon   # Studio slug: web-3-index-polygon
+yarn deploy:studio:mainnet   # Studio slug: web-3-index-mainnet
 ```
 
 Grab the deployment ID from Studio and drop it into `GRAPH_SUBGRAPH_<NETWORK>_ID` for the web app.
 
 ## Handy scripts
 
-| Command              | Description                                   |
-| ------------------- | --------------------------------------------- |
-| `yarn build`        | Runs codegen + graph build                     |
-| `yarn build:mainnet`| Builds the legacy Ethereum mainnet manifest    |
-| `yarn deploy:local` | Deploys to a local graph-node                  |
-| `yarn deploy:studio`| Deploys to Subgraph Studio / The Graph Network |
-| `yarn deploy:studio:mainnet`| Deploys the mainnet manifest to Studio |
-| `yarn lint`         | ESLint                                         |
-| `yarn prettier`     | Formatting check                               |
+| Command                    | Description                                              |
+| ------------------------- | -------------------------------------------------------- |
+| `yarn build[:network]`    | Codegen + build (optionally rewriting via `networks.json`) |
+| `yarn deploy:local[:net]` | Deploys the current manifest to a local graph-node        |
+| `yarn deploy:studio[:net]`| Deploys to Subgraph Studio with matching slug/network     |
+| `yarn lint`               | ESLint                                                    |
+| `yarn prettier`           | Formatting check                                          |
