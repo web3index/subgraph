@@ -53,6 +53,8 @@ dataSources:
       abis:
         - name: Staking
           file: ./src/thegraph/abis/Staking.json
+        - name: SushiPair
+          file: ./src/thegraph/abis/SushiPair.json
       eventHandlers:
         - event: AllocationCollected(indexed address,indexed bytes32,uint256,uint256,indexed address,address,uint256,uint256)
           handler: handleAllocationCollected
