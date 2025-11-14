@@ -31,11 +31,13 @@ Each manifest already encodes its network, address, and start block, so the buil
 
 ## Build + validate
 
+Run the commands in this order whenever you change schemas/abis or switch manifests:
+
 ```bash
-yarn build              # graph build using the default Arbitrum manifest
-yarn build:arbitrum     # explicit Arbitrum build (alias of yarn build)
-yarn build:polygon      # builds the Polygon-only manifest
-yarn build:mainnet      # builds the Ethereum mainnet manifest
+yarn codegen            # regenerates bindings for every manifest (must run first)
+yarn build              # default Arbitrum build
+yarn build:polygon      # polygon build (re-run codegen if generated files changed)
+yarn build:mainnet      # mainnet build (re-run codegen if generated files changed)
 ```
 
 Generated bindings live in `generated/` and are recreated every build.
@@ -71,8 +73,9 @@ Grab the deployment ID from Studio and drop it into `GRAPH_SUBGRAPH_<NETWORK>_ID
 
 | Command                    | Description                                              |
 | ------------------------- | -------------------------------------------------------- |
-| `yarn build[:network]`    | Codegen + build targeting the manifest for that network    |
-| `yarn deploy:local[:net]` | Deploys the current manifest to a local graph-node        |
-| `yarn deploy:studio[:net]`| Deploys to Subgraph Studio with matching slug/network     |
+| `yarn codegen`            | Regenerates bindings for Arbitrum, mainnet, and Polygon; always run this first |
+| `yarn build[:network]`    | Builds the manifest for that network using the latest generated files |
+| `yarn deploy:local[:net]` | Deploys the current manifest to a local graph-node (ensure bindings are regenerated) |
+| `yarn deploy:studio[:net]`| Deploys to Subgraph Studio (run `yarn codegen` first if code changed) |
 | `yarn lint`               | ESLint                                                    |
 | `yarn prettier`           | Formatting check                                          |

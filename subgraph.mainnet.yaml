@@ -31,7 +31,7 @@ dataSources:
             address,uint256,uint256,uint256,uint256,bytes)
           handler: winningTicketRedeemed
   - kind: ethereum/contract
-    name: thegraph
+    name: thegraphMainnet
     network: mainnet
     source:
       address: F55041E37E12cD407ad00CE2910B8269B01263b9
