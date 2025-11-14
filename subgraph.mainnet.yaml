@@ -21,12 +21,8 @@ dataSources:
       abis:
         - name: TicketBroker
           file: ./src/livepeer/abis/TicketBroker.json
-        - name: UniswapExchange
-          file: ./src/livepeer/abis/UniswapExchange.json
         - name: AggregatorV3Interface
-          file: ./src/livepeer/abis/AggregatorV3Interface.json
-        - name: UniswapV3Pool
-          file: ./src/livepeer/abis/UniswapV3Pool.json
+          file: ./src/abis/AggregatorV3Interface.json
       entities:
         - Day
         - Protocol
@@ -52,8 +48,8 @@ dataSources:
       abis:
         - name: Staking
           file: ./src/thegraph/abis/Staking.json
-        - name: SushiPair
-          file: ./src/thegraph/abis/SushiPair.json
+        - name: AggregatorV3Interface
+          file: ./src/abis/AggregatorV3Interface.json
       eventHandlers:
         - event: AllocationCollected(indexed address,indexed
             bytes32,uint256,uint256,indexed address,address,uint256,uint256)

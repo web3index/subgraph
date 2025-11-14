@@ -24,8 +24,8 @@ dataSources:
       abis:
         - name: Billing
           file: ./src/thegraph/abis/Billing.json
-        - name: SushiPair
-          file: ./src/thegraph/abis/SushiPair.json
+        - name: AggregatorV3Interface
+          file: ./src/abis/AggregatorV3Interface.json
       eventHandlers:
         - event: TokensPulled(indexed address,uint256)
           handler: handleTokensPulled

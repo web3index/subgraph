@@ -1,6 +1,11 @@
-import { Address, BigDecimal, BigInt, dataSource } from "@graphprotocol/graph-ts";
+import {
+  Address,
+  BigDecimal,
+  BigInt,
+  dataSource,
+} from "@graphprotocol/graph-ts";
 import { Day, Protocol } from "../generated/schema";
-import { SushiPair } from "../generated/thegraph/SushiPair";
+import { AggregatorV3Interface } from "../generated/thegraph/AggregatorV3Interface";
 
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);
@@ -71,47 +76,40 @@ export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
 }
 
 /**
- * Divides two BigDecimals but guards against division by zero.
+ * Returns the USD price of GRT using Chainlink feeds on each supported network.
  */
-export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
-  if (amount1.equals(ZERO_BD)) {
+export function getGRTPriceInUSD(): BigDecimal {
+  let feedAddress = getGRTFeedAddress(dataSource.network());
+  if (feedAddress.equals(Address.zero())) {
     return ZERO_BD;
-  } else {
-    return amount0.div(amount1);
   }
+
+  let aggregator = AggregatorV3Interface.bind(feedAddress);
+  let priceResult = aggregator.try_latestRoundData();
+  if (priceResult.reverted) {
+    return ZERO_BD;
+  }
+
+  let decimalsResult = aggregator.try_decimals();
+  let decimals = decimalsResult.reverted ? 8 : decimalsResult.value;
+  let scale = exponentToBigDecimal(BigInt.fromI32(decimals));
+
+  return priceResult.value.value1.toBigDecimal().div(scale);
 }
 
 /**
- * Returns GRT priced in USD, using network-specific pools for L1 vs Arbitrum.
+ * Returns the Chainlink feed address for GRT/USD on each supported network.
  */
-export function getGRTPriceInUSD(): BigDecimal {
-  let network = dataSource.network();
-
+function getGRTFeedAddress(network: string): Address {
   if (network == "mainnet") {
-    let grtUsdPair = SushiPair.bind(
-      Address.fromString("0xdfa42ba0130425b21a1568507b084cc246fb0c8f")
-    );
-    let pairReserves = grtUsdPair.getReserves();
-    let usdc = convertTokenToDecimal(pairReserves.value0, BigInt.fromI32(6));
-    let grt = convertTokenToDecimal(pairReserves.value1, BI_18);
-    return safeDiv(usdc, grt);
+    return Address.fromString("0x86cF33a451dE9dc61a2862FD94FF4ad4Bd65A5d");
+  }
+  if (network == "arbitrum-one") {
+    return Address.fromString("0x0F38D86FceF4955B705F35c9e41d1A16e0637c73");
+  }
+  if (network == "matic") {
+    return Address.fromString("0x3FabBfb300B1e2D7c9B84512fE9D30aeDF24C410");
   }
 
-  let grtPriceOracle = SushiPair.bind(
-    Address.fromString("0x99059b8dd38bced5a47fa2d2211de7c46eb2f1f8")
-  );
-  let reserve1 = grtPriceOracle.getReserves();
-  let grtPriceInETH = reserve1.value1
-    .toBigDecimal()
-    .div(reserve1.value0.toBigDecimal());
-
-  let ethPriceOracle = SushiPair.bind(
-    Address.fromString("0x692a0b300366d1042679397e40f3d2cb4b8f7d30")
-  );
-  let reserve2 = ethPriceOracle.getReserves();
-  let ethPriceInUSD = reserve2.value1
-    .toBigDecimal()
-    .div(reserve2.value0.toBigDecimal());
-
-  return grtPriceInETH.times(ethPriceInUSD);
+  return Address.zero();
 }
