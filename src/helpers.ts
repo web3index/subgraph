@@ -102,13 +102,13 @@ export function getGRTPriceInUSD(): BigDecimal {
  */
 function getGRTFeedAddress(network: string): Address {
   if (network == "mainnet") {
-    return Address.fromString("0x86cF33a451dE9dc61a2862FD94FF4ad4Bd65A5d");
+    return Address.fromString("0x86cF33a451dE9dc61a2862FD94FF4ad4Bd65A5d2");
   }
   if (network == "arbitrum-one") {
     return Address.fromString("0x0F38D86FceF4955B705F35c9e41d1A16e0637c73");
   }
   if (network == "matic") {
-    return Address.fromString("0x3FabBfb300B1e2D7c9B84512fE9D30aeDF24C410");
+    return Address.fromString("0x3FabBfb300B1e2D7c9B84512fe9D30aeDF24C410");
   }
 
   return Address.zero();
