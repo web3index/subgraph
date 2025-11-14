@@ -2,7 +2,6 @@
 
 This package contains the source code for the Web3 Index Subgraph, a subgraph for indexing and querying fee data across Web3 network protocols using [The Graph](https://thegraph.com).
 
-
 ## Requirements
 
 - Node.js 20.19+ (see `.nvmrc`)
