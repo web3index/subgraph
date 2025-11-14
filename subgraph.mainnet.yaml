@@ -10,8 +10,8 @@ dataSources:
     network: mainnet
     source:
       address: "0x5b1cE829384eEBfa30286F12D1e7a695cA45f5D2"
-      abi: TicketBroker
       startBlock: 9274420
+      abi: TicketBroker
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -22,10 +22,10 @@ dataSources:
           file: ./src/livepeer/abis/TicketBroker.json
         - name: UniswapExchange
           file: ./src/livepeer/abis/UniswapExchange.json
-        - name: UniswapV3Pool
-          file: ./src/livepeer/abis/UniswapV3Pool.json
         - name: AggregatorV3Interface
           file: ./src/livepeer/abis/AggregatorV3Interface.json
+        - name: UniswapV3Pool
+          file: ./src/livepeer/abis/UniswapV3Pool.json
       entities:
         - Day
         - Protocol
@@ -38,8 +38,8 @@ dataSources:
     network: mainnet
     source:
       address: "0xF55041E37E12cD407ad00CE2910B8269B01263b9"
-      abi: Staking
       startBlock: 11446786
+      abi: Staking
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

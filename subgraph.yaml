@@ -7,11 +7,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: livepeer
-    network: matic
+    network: arbitrum-one
     source:
+      address: "0xa8bB618B1520E284046F3dFc448851A1Ff26e41B"
+      startBlock: 5856357
       abi: TicketBroker
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -22,31 +22,33 @@ dataSources:
           file: ./src/livepeer/abis/TicketBroker.json
         - name: UniswapExchange
           file: ./src/livepeer/abis/UniswapExchange.json
-        - name: UniswapV3Pool
-          file: ./src/livepeer/abis/UniswapV3Pool.json
         - name: AggregatorV3Interface
           file: ./src/livepeer/abis/AggregatorV3Interface.json
+        - name: UniswapV3Pool
+          file: ./src/livepeer/abis/UniswapV3Pool.json
       entities:
         - Day
         - Protocol
       eventHandlers:
-        - event: WinningTicketRedeemed(indexed address,indexed
+        - event: 
+            WinningTicketRedeemed(indexed address,indexed
             address,uint256,uint256,uint256,uint256,bytes)
           handler: winningTicketRedeemed
   - kind: ethereum/contract
     name: thegraphBilling
-    network: matic
+    network: arbitrum-one
     source:
+      address: "0x1B07D3344188908Fb6DEcEac381f3eE63C48477a"
+      startBlock: 42472346
       abi: Billing
-      address: "0x10829DB618E6F520Fa3A01c75bC6dDf8722fA9fE"
-      startBlock: 17803962
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/thegraph/mapping.ts
       entities:
-        - TokensPulled
+        - Day
+        - Protocol
       abis:
         - name: Billing
           file: ./src/thegraph/abis/Billing.json
