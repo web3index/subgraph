@@ -458,12 +458,12 @@
     web3-eth-abi "4.4.1"
     yaml "2.8.1"
 
-"@graphprotocol/graph-ts@^0.28.0":
-  version "0.28.1"
-  resolved "https://registry.yarnpkg.com/@graphprotocol/graph-ts/-/graph-ts-0.28.1.tgz#271affc77deb5a4a7c3f95d4b3b1daaa9818e51c"
-  integrity sha512-1wMLQ0cu84/6Ml3zcz9ya1zFzrDAzCj0dIGZ7Rz9upnRSXg5jjqU4DefO/OYrl2K2/OPso9hSAr6I4aue2pL1Q==
+"@graphprotocol/graph-ts@^0.38.2":
+  version "0.38.2"
+  resolved "https://registry.yarnpkg.com/@graphprotocol/graph-ts/-/graph-ts-0.38.2.tgz#e99bdb6e0e50485084c442d7a02409082a836ff8"
+  integrity sha512-87KIFSFs2+Te+mnmb7Y+M57oqzlLy20cIyPIRbn9qJfpZFSZHTKtBLT6KQmcsK0YkoWis9Ur3c3M2c9mmaaEHQ==
   dependencies:
-    assemblyscript "0.19.10"
+    assemblyscript "0.27.31"
 
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
@@ -1259,14 +1259,6 @@ array-union@^2.1.0:
   resolved "https://registry.yarnpkg.com/array-union/-/array-union-2.1.0.tgz#b798420adbeb1de828d84acd8a2e23d3efe85e8d"
   integrity sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==
 
-assemblyscript@0.19.10:
-  version "0.19.10"
-  resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.19.10.tgz#7ede6d99c797a219beb4fa4614c3eab9e6343c8e"
-  integrity sha512-HavcUBXB3mBTRGJcpvaQjmnmaqKHBGREjSPNsIvnAk2f9dj78y4BkMaSSdvBQYWcDDzsHQjyUC8stICFkD1Odg==
-  dependencies:
-    binaryen "101.0.0-nightly.20210723"
-    long "^4.0.0"
-
 assemblyscript@0.19.23:
   version "0.19.23"
   resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.19.23.tgz#16ece69f7f302161e2e736a0f6a474e6db72134c"
@@ -1276,13 +1268,13 @@ assemblyscript@0.19.23:
     long "^5.2.0"
     source-map-support "^0.5.20"
 
-assemblyscript@^0.20.0:
-  version "0.20.19"
-  resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.20.19.tgz#7c29f506a31d526f7d7e3b22908cc8774b378681"
-  integrity sha512-IJN2CaAwCdRgTSZz3GiuYyXtXIjETBrlzky9ww9jFlEgH8i0pNFt6MAS3viogkofem+rcY6Fhr/clk+b6LWLBw==
+assemblyscript@0.27.31:
+  version "0.27.31"
+  resolved "https://registry.yarnpkg.com/assemblyscript/-/assemblyscript-0.27.31.tgz#07412b1bc42c67f78080dbaddca030ab74d3b9b2"
+  integrity sha512-Ra8kiGhgJQGZcBxjtMcyVRxOEJZX64kd+XGpjWzjcjgxWJVv+CAQO0aDBk4GQVhjYbOkATarC83mHjAVGtwPBQ==
   dependencies:
-    binaryen "109.0.0-nightly.20220813"
-    long "^5.2.0"
+    binaryen "116.0.0-nightly.20240114"
+    long "^5.2.1"
 
 async@^3.2.6:
   version "3.2.6"
@@ -1323,20 +1315,15 @@ bignumber.js@^9.1.0:
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.3.1.tgz#759c5aaddf2ffdc4f154f7b493e1c8770f88c4d7"
   integrity sha512-Ko0uX15oIUS7wJ3Rb30Fs6SkVbLmPBAKdlm7q9+ak9bbIeFf0MwuBsQV6z7+X768/cHsfg+WlysDWJcmthjsjQ==
 
-binaryen@101.0.0-nightly.20210723:
-  version "101.0.0-nightly.20210723"
-  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-101.0.0-nightly.20210723.tgz#b6bb7f3501341727681a03866c0856500eec3740"
-  integrity sha512-eioJNqhHlkguVSbblHOtLqlhtC882SOEPKmNFZaDuz1hzQjolxZ+eu3/kaS10n3sGPONsIZsO7R9fR00UyhEUA==
-
 binaryen@102.0.0-nightly.20211028:
   version "102.0.0-nightly.20211028"
   resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-102.0.0-nightly.20211028.tgz#8f1efb0920afd34509e342e37f84313ec936afb2"
   integrity sha512-GCJBVB5exbxzzvyt8MGDv/MeUjs6gkXDvf4xOIItRBptYl0Tz5sm1o/uG95YK0L0VeG5ajDu3hRtkBP2kzqC5w==
 
-binaryen@109.0.0-nightly.20220813:
-  version "109.0.0-nightly.20220813"
-  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-109.0.0-nightly.20220813.tgz#6928acf8820fc1270d41dbb157c0c2337a067d20"
-  integrity sha512-u85Ti3LiGRrV0HqdNDRknalkx7QiCSL0jNsEsT522nnZacWxUaSJEILphxc2OnzmHVtdiWBE3c4lEzlU3ZEyDw==
+binaryen@116.0.0-nightly.20240114:
+  version "116.0.0-nightly.20240114"
+  resolved "https://registry.yarnpkg.com/binaryen/-/binaryen-116.0.0-nightly.20240114.tgz#ad8bfbde77d4cb4715b93997114eefc30f45155b"
+  integrity sha512-0GZrojJnuhoe+hiwji7QFaL3tBlJoA+KFUN7ouYSDGZLSo9CKM8swQX8n/UcbR0d1VuZKU+nhogNzv423JEu5A==
 
 bl@^1.0.0:
   version "1.2.3"
@@ -3075,12 +3062,7 @@ log-symbols@^3.0.0:
   dependencies:
     chalk "^2.4.2"
 
-long@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
-  integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
-
-long@^5.2.0:
+long@^5.2.0, long@^5.2.1:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/long/-/long-5.3.2.tgz#1d84463095999262d7d7b7f8bfd4a8cc55167f83"
   integrity sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==
