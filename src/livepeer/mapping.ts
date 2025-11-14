@@ -5,7 +5,7 @@ import {
   ZERO_BD,
 } from "../helpers";
 import { createOrLoadDay, createOrLoadProtocol } from "../helpers";
-import { WinningTicketRedeemed } from "../../generated/livepeer/TicketBroker"; 
+import { WinningTicketRedeemed } from "../../generated/livepeer/TicketBroker";
 import { UniswapV3Pool } from "../../generated/livepeer/UniswapV3Pool";
 
 export function winningTicketRedeemed(event: WinningTicketRedeemed): void {
