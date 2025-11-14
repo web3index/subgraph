@@ -24,18 +24,18 @@ yarn install
 This subgraph supports multiple networks:
 
 - **`subgraph.yaml`** - Arbitrum manifest (indexes Livepeer + The Graph Billing)
-- **`subgraph.mainnet.yaml`** - Ethereum mainnet manifest (indexes Livepeer Staking)
-- **`networks.json`** - Configuration file with contract addresses and start blocks
+- **`subgraph.polygon.yaml`** - Polygon manifest (indexes The Graph Billing only)
+- **`subgraph.mainnet.yaml`** - Ethereum mainnet manifest (indexes Livepeer + The Graph Staking)
 
-Use `--network <name>` with build/deploy commands to target a specific network. The CLI automatically rewrites manifests using `networks.json` before compiling.
+Each manifest already encodes its network, address, and start block, so the build/deploy scripts point directly at the desired file without rewriting them in-place.
 
 ## Build + validate
 
 ```bash
-yarn build              # graph build using current manifest contents
-yarn build:arbitrum     # rewrites via networks.json + builds for arbitrum-one
-yarn build:polygon      # same, but targeting Polygon (Billing only)
-yarn build:mainnet      # builds the mainnet manifest via networks.json
+yarn build              # graph build using the default Arbitrum manifest
+yarn build:arbitrum     # explicit Arbitrum build (alias of yarn build)
+yarn build:polygon      # builds the Polygon-only manifest
+yarn build:mainnet      # builds the Ethereum mainnet manifest
 ```
 
 Generated bindings live in `generated/` and are recreated every build.
@@ -71,7 +71,7 @@ Grab the deployment ID from Studio and drop it into `GRAPH_SUBGRAPH_<NETWORK>_ID
 
 | Command                    | Description                                              |
 | ------------------------- | -------------------------------------------------------- |
-| `yarn build[:network]`    | Codegen + build (optionally rewriting via `networks.json`) |
+| `yarn build[:network]`    | Codegen + build targeting the manifest for that network    |
 | `yarn deploy:local[:net]` | Deploys the current manifest to a local graph-node        |
 | `yarn deploy:studio[:net]`| Deploys to Subgraph Studio with matching slug/network     |
 | `yarn lint`               | ESLint                                                    |
