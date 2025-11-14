@@ -37,7 +37,7 @@ Generated bindings live in `src/generated/` and are recreated every build.
 2. `docker compose up` inside `graph-node/docker`, wait for port `8020` to come up, then in this repo:
 
    ```bash
-   graph create --node http://localhost:8020/ web-3-index # run once
+   yarn graph create --node http://localhost:8020/ web-3-index # run once
    yarn build
    yarn deploy:local
    ```
@@ -45,7 +45,7 @@ Generated bindings live in `src/generated/` and are recreated every build.
 ## Subgraph Studio / The Graph Network
 
 ```bash
-graph auth <DEPLOY_KEY>
+yarn graph auth <DEPLOY_KEY>
 yarn build
 yarn deploy:studio
 ```
