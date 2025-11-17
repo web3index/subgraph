@@ -1,7 +1,7 @@
 """
 Protocol global parameters
 """
-type Protocol @entity {
+type Protocol @entity(immutable: false) {
   "Protocol id"
   id: ID!
   "Total protocol revenue"
@@ -13,7 +13,7 @@ type Protocol @entity {
 """
 Protocol data accumulated and condensed into day stats
 """
-type Day @entity {
+type Day @entity(immutable: false) {
   "Timestamp rounded to current day by dividing by 86400"
   id: ID!
   "The date beginning at 12:00am UTC"

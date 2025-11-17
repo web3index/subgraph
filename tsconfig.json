@@ -13,7 +13,6 @@
     "rootDirs": ["src", "generated"],
     "baseUrl": ".",
     "paths": {
-      "../generated/*": ["generated/*"],
       "../../thegraph/abis/*": ["src/thegraph/abis/*"]
     }
   },
