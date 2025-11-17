@@ -1,4 +1,9 @@
-import { Address, BigDecimal, BigInt, dataSource } from "@graphprotocol/graph-ts";
+import {
+  Address,
+  BigDecimal,
+  BigInt,
+  dataSource,
+} from "@graphprotocol/graph-ts";
 import {
   convertToDecimal,
   createOrLoadDay,
@@ -47,9 +52,7 @@ function getEthPriceUSD(): BigDecimal {
   }
 
   let decimalsResult = aggregator.try_decimals();
-  let decimals = decimalsResult.reverted
-    ? 8
-    : decimalsResult.value;
+  let decimals = decimalsResult.reverted ? 8 : decimalsResult.value;
 
   let scale = exponentToBigDecimal(BigInt.fromI32(decimals));
   return priceResult.value.value1.toBigDecimal().div(scale);

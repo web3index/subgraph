@@ -5,9 +5,11 @@
     "sourceType": "module"
   },
   "extends": ["plugin:@typescript-eslint/recommended"],
+  "ignorePatterns": ["generated/**", "build/**"],
   "rules": {
     "prefer-const": "off",
     "@typescript-eslint/no-inferrable-types": "warn",
-    "@typescript-eslint/no-empty-function": "warn"
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/ban-types": "off"
   }
 }
