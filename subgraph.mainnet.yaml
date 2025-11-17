@@ -1,0 +1,56 @@
+specVersion: 0.0.4
+description: 
+  The Web3 Index reports on the demand-side fees paid into web3 network
+  protocols.
+repository: https://github.com/web3index/subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: livepeer
+    network: mainnet
+    source:
+      address: 5b1cE829384eEBfa30286F12D1e7a695cA45f5D2
+      abi: TicketBroker
+      startBlock: 9274420
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/livepeer/mapping.ts
+      abis:
+        - name: TicketBroker
+          file: ./src/livepeer/abis/TicketBroker.json
+        - name: AggregatorV3Interface
+          file: ./src/abis/AggregatorV3Interface.json
+      entities:
+        - Day
+        - Protocol
+      eventHandlers:
+        - event: WinningTicketRedeemed(indexed address,indexed
+            address,uint256,uint256,uint256,uint256,bytes)
+          handler: winningTicketRedeemed
+  - kind: ethereum/contract
+    name: thegraphMainnet
+    network: mainnet
+    source:
+      address: F55041E37E12cD407ad00CE2910B8269B01263b9
+      abi: Staking
+      startBlock: 11446786
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/thegraph/mapping.mainnet.ts
+      entities:
+        - Day
+        - Protocol
+      abis:
+        - name: Staking
+          file: ./src/thegraph/abis/Staking.json
+        - name: AggregatorV3Interface
+          file: ./src/abis/AggregatorV3Interface.json
+      eventHandlers:
+        - event: AllocationCollected(indexed address,indexed
+            bytes32,uint256,uint256,indexed address,address,uint256,uint256)
+          handler: handleAllocationCollected

@@ -1,0 +1,31 @@
+specVersion: 0.0.4
+description: 
+  The Web3 Index reports on the demand-side fees paid into web3 network
+  protocols.
+repository: https://github.com/web3index/subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: thegraph
+    network: matic
+    source:
+      address: 10829DB618E6F520Fa3A01c75bC6dDf8722fA9fE
+      abi: Billing
+      startBlock: 17803962
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/thegraph/mapping.ts
+      entities:
+        - Day
+        - Protocol
+      abis:
+        - name: Billing
+          file: ./src/thegraph/abis/Billing.json
+        - name: AggregatorV3Interface
+          file: ./src/abis/AggregatorV3Interface.json
+      eventHandlers:
+        - event: TokensPulled(indexed address,uint256)
+          handler: handleTokensPulled

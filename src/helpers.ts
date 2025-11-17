@@ -1,7 +1,11 @@
-import { Address, BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import {
+  Address,
+  BigDecimal,
+  BigInt,
+  dataSource,
+} from "@graphprotocol/graph-ts";
 import { Day, Protocol } from "../generated/schema";
-import { UniswapV2Pair } from "../generated/livepeer/UniswapV2Pair";
-import { SushiPair } from "../generated/thegraph/SushiPair";
+import { AggregatorV3Interface } from "../generated/thegraph/AggregatorV3Interface";
 
 export let ZERO_BI = BigInt.fromI32(0);
 export let ONE_BI = BigInt.fromI32(1);
@@ -9,6 +13,9 @@ export let ZERO_BD = BigDecimal.fromString("0");
 export let ONE_BD = BigDecimal.fromString("1");
 export let BI_18 = BigInt.fromI32(18);
 
+/**
+ * Returns 10^decimals as a BigDecimal so we can rescale token amounts.
+ */
 export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   let bd = BigDecimal.fromString("1");
   for (let i = ZERO_BI; i.lt(decimals as BigInt); i = i.plus(ONE_BI)) {
@@ -17,6 +24,9 @@ export function exponentToBigDecimal(decimals: BigInt): BigDecimal {
   return bd;
 }
 
+/**
+ * Converts a raw token amount into decimals-aware BigDecimal.
+ */
 export function convertTokenToDecimal(
   tokenAmount: BigInt,
   exchangeDecimals: BigInt
@@ -27,10 +37,16 @@ export function convertTokenToDecimal(
   return tokenAmount.toBigDecimal().div(exponentToBigDecimal(exchangeDecimals));
 }
 
+/**
+ * Converts a wei-denominated amount into ETH as BigDecimal.
+ */
 export function convertToDecimal(eth: BigInt): BigDecimal {
   return eth.toBigDecimal().div(exponentToBigDecimal(BI_18));
 }
 
+/**
+ * Finds or creates the Protocol entity keyed by the supplied id.
+ */
 export function createOrLoadProtocol(id: string): Protocol {
   let protocol = Protocol.load(id);
   if (protocol == null) {
@@ -41,6 +57,9 @@ export function createOrLoadProtocol(id: string): Protocol {
   return protocol as Protocol;
 }
 
+/**
+ * Returns the day bucket for a protocol at the given timestamp, creating it if needed.
+ */
 export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   let dayID = timestamp / 86400;
   let dayStartTimestamp = dayID * 86400;
@@ -56,61 +75,41 @@ export function createOrLoadDay(protocolID: string, timestamp: i32): Day {
   return day as Day;
 }
 
-export function getPairPrice(
-  pairAddress: string,
-  reserve0Decimals: BigInt,
-  reserve1Decimals: BigInt
-): BigDecimal {
-  let pair = UniswapV2Pair.bind(Address.fromString(pairAddress));
-  let pairReserves = pair.getReserves();
-  return convertTokenToDecimal(pairReserves.value0, reserve0Decimals).div(
-    convertTokenToDecimal(pairReserves.value1, reserve1Decimals)
-  );
-}
-
-// return 0 if denominator is 0 in division
-export function safeDiv(amount0: BigDecimal, amount1: BigDecimal): BigDecimal {
-  if (amount1.equals(ZERO_BD)) {
-    return ZERO_BD;
-  } else {
-    return amount0.div(amount1);
-  }
-}
-
-let Q192 = BigInt.fromString("2").pow(192);
-export function sqrtPriceX96ToTokenPrices(
-  sqrtPriceX96: BigInt,
-  token0Decimals: BigInt,
-  token1Decimals: BigInt
-): BigDecimal[] {
-  let num = sqrtPriceX96.times(sqrtPriceX96).toBigDecimal();
-  let denom = BigDecimal.fromString(Q192.toString());
-
-  let price1 = num
-    .div(denom)
-    .times(exponentToBigDecimal(token0Decimals))
-    .div(exponentToBigDecimal(token1Decimals));
-
-  let price0 = safeDiv(BigDecimal.fromString("1"), price1);
-  return [price0, price1];
-}
-
+/**
+ * Returns the USD price of GRT using Chainlink feeds on each supported network.
+ */
 export function getGRTPriceInUSD(): BigDecimal {
-  let grtPriceOracle = SushiPair.bind(
-    Address.fromString("0x99059b8dd38bced5a47fa2d2211de7c46eb2f1f8")
-  );
-  let reserve1 = grtPriceOracle.getReserves();
-  let grtPriceInETH = reserve1.value1
-    .toBigDecimal()
-    .div(reserve1.value0.toBigDecimal());
+  let feedAddress = getGRTFeedAddress(dataSource.network());
+  if (feedAddress.equals(Address.zero())) {
+    return ZERO_BD;
+  }
 
-  let ethPriceOracle = SushiPair.bind(
-    Address.fromString("0x692a0b300366d1042679397e40f3d2cb4b8f7d30")
-  );
-  let reserve2 = ethPriceOracle.getReserves();
-  let ethPriceInUSD = reserve2.value1
-    .toBigDecimal()
-    .div(reserve2.value0.toBigDecimal());
+  let aggregator = AggregatorV3Interface.bind(feedAddress);
+  let priceResult = aggregator.try_latestRoundData();
+  if (priceResult.reverted) {
+    return ZERO_BD;
+  }
 
-  return grtPriceInETH.times(ethPriceInUSD);
+  let decimalsResult = aggregator.try_decimals();
+  let decimals = decimalsResult.reverted ? 8 : decimalsResult.value;
+  let scale = exponentToBigDecimal(BigInt.fromI32(decimals));
+
+  return priceResult.value.value1.toBigDecimal().div(scale);
+}
+
+/**
+ * Returns the Chainlink feed address for GRT/USD on each supported network.
+ */
+function getGRTFeedAddress(network: string): Address {
+  if (network == "mainnet") {
+    return Address.fromString("0x86cF33a451dE9dc61a2862FD94FF4ad4Bd65A5d2");
+  }
+  if (network == "arbitrum-one") {
+    return Address.fromString("0x0F38D86FceF4955B705F35c9e41d1A16e0637c73");
+  }
+  if (network == "matic") {
+    return Address.fromString("0x3FabBfb300B1e2D7c9B84512fe9D30aeDF24C410");
+  }
+
+  return Address.zero();
 }

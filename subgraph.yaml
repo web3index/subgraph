@@ -1,5 +1,5 @@
 specVersion: 0.0.4
-description:
+description: 
   The Web3 Index reports on the demand-side fees paid into web3 network
   protocols.
 repository: https://github.com/web3index/subgraph
@@ -10,9 +10,9 @@ dataSources:
     name: livepeer
     network: arbitrum-one
     source:
-      startBlock: 14207040
       address: a8bB618B1520E284046F3dFc448851A1Ff26e41B
       abi: TicketBroker
+      startBlock: 5856357
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -20,18 +20,14 @@ dataSources:
       file: ./src/livepeer/mapping.ts
       abis:
         - name: TicketBroker
-          file: ./src/livepeer/abis/TicketBroker.json  
-        - name: UniswapExchange
-          file: ./src/livepeer/abis/UniswapExchange.json
-        - name: UniswapV2Pair
-          file: ./src/livepeer/abis/UniswapV2Pair.json
-        - name: UniswapV3Pool
-          file: ./src/livepeer/abis/UniswapV3Pool.json
+          file: ./src/livepeer/abis/TicketBroker.json
+        - name: AggregatorV3Interface
+          file: ./src/abis/AggregatorV3Interface.json
       entities:
         - Day
         - Protocol
       eventHandlers:
-        - event:
+        - event: 
             WinningTicketRedeemed(indexed address,indexed
             address,uint256,uint256,uint256,uint256,bytes)
           handler: winningTicketRedeemed
@@ -41,19 +37,20 @@ dataSources:
     source:
       address: 1B07D3344188908Fb6DEcEac381f3eE63C48477a
       abi: Billing
-      startBlock: 42449166
+      startBlock: 42472346
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       file: ./src/thegraph/mapping.ts
       entities:
-        - TokensPulled
+        - Day
+        - Protocol
       abis:
         - name: Billing
           file: ./src/thegraph/abis/Billing.json
-        - name: SushiPair
-          file: ./src/thegraph/abis/SushiPair.json
+        - name: AggregatorV3Interface
+          file: ./src/abis/AggregatorV3Interface.json
       eventHandlers:
         - event: TokensPulled(indexed address,uint256)
           handler: handleTokensPulled
